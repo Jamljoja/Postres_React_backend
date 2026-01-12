@@ -1,20 +1,17 @@
-# Imagen base
-FROM node:20-alpine
+# Usa la versión de Node que tienes
+FROM node:22-alpine
 
-# Directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copiar package.json y package-lock.json
-COPY package*.json ./
-
 # Instalar dependencias
+COPY package*.json ./
 RUN npm install --production
 
 # Copiar el resto del código
 COPY . .
 
-# Puerto que usa tu backend
+# Exponer el puerto
 EXPOSE 5000
 
-# Comando para iniciar la app
-CMD ["npm", "start"]
+# Arrancar la app
+CMD ["node", "index.js"]

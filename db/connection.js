@@ -1,21 +1,27 @@
 import pkg from "pg";
-
+import "dotenv/config";
 const { Pool } = pkg;
 
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  throw new Error("La variable DATABASE_URL no está definida.");
+}
+
+// IMPORTANTE: Debe decir 'export const pool'
 export const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString,
   ssl: {
-    rejectUnauthorized: false,
+    rejectUnauthorized: false, // Obligatorio para Supabase en Render/Docker
   },
 });
 
-// Test conexión
-pool
-  .query("SELECT 1")
-  .then(() => console.log("✅ Conectado a Supabase"))
-  .catch((err) => console.error("❌ Error DB:", err.message));
 
-// Crear tabla
+// Prueba de conexión
+pool.query("SELECT 1")
+  .then(() => console.log("✅ Conectado a Supabase"))
+  .catch((err) => console.error("❌ Error de conexión:", err.message));
+
 const createTable = async () => {
   try {
     await pool.query(`
@@ -27,9 +33,9 @@ const createTable = async () => {
         image_url TEXT
       );
     `);
-    console.log("✅ Tabla 'desserts' verificada o creada.");
+    console.log("✅ Tabla 'desserts' lista.");
   } catch (error) {
-    console.error("❌ Error al crear la tabla:", error);
+    console.error("❌ Error al crear la tabla:", error.message);
   }
 };
 
