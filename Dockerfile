@@ -14,7 +14,7 @@ RUN npm install --production
 COPY . .
 
 # Puerto que usa tu backend
-EXPOSE 3000
+EXPOSE 5000
 
 # Comando para iniciar la app
 CMD ["npm", "start"]
