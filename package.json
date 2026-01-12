@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "docker:run": "docker run -p 5000:5000 --env-file .env postres-backend"
   },
   "keywords": [],
   "author": "",
