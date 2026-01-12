@@ -2,27 +2,31 @@ import pkg from "pg";
 import "dotenv/config";
 const { Pool } = pkg;
 
+// Tomamos la URL del entorno
 const connectionString = process.env.DATABASE_URL;
 
-if (!connectionString) {
-  throw new Error("La variable DATABASE_URL no está definida.");
-}
-
-// IMPORTANTE: Debe decir 'export const pool'
 export const pool = new Pool({
-  connectionString,
+  connectionString: connectionString,
+  // IMPORTANTE: El puerto 6543 de Supabase SIEMPRE requiere SSL
   ssl: {
-    rejectUnauthorized: false, // Obligatorio para Supabase en Render/Docker
+    rejectUnauthorized: false
   },
+  // Configuración de estabilidad
+  max: 10,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
 });
 
+// Test de conexión inmediato
+pool.query('SELECT NOW()')
+  .then(() => console.log("✅ CONECTADO A SUPABASE EXITOSAMENTE"))
+  .catch(err => {
+    console.error("❌ ERROR CRÍTICO DE CONEXIÓN:");
+    console.error(err.message);
+  });
 
-// Prueba de conexión
-pool.query("SELECT 1")
-  .then(() => console.log("✅ Conectado a Supabase"))
-  .catch((err) => console.error("❌ Error de conexión:", err.message));
-
-const createTable = async () => {
+// Crear tabla
+export const createTable = async () => {
   try {
     await pool.query(`
       CREATE TABLE IF NOT EXISTS desserts (
@@ -35,7 +39,7 @@ const createTable = async () => {
     `);
     console.log("✅ Tabla 'desserts' lista.");
   } catch (error) {
-    console.error("❌ Error al crear la tabla:", error.message);
+    console.error("❌ Error creando tabla:", error.message);
   }
 };
 
