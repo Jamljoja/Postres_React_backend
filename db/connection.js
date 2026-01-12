@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 dotenv.config();
 const { Pool } = pkg;
 
+const isProduction = process.env.NODE_ENV === "production";
+
 export const pool = new Pool({
 
   connectionString: process.env.DATABASE_URL, 
@@ -13,8 +15,8 @@ export const pool = new Pool({
 });
 
 pool.query("SELECT 1")
-  .then(() => console.log("✅ Conectado a Supabase (POOLER)"))
-  .catch(err => console.error("❌ Error DB:", err.message));
+  .then(() => console.log(" Conectado a Supabase (POOLER)"))
+  .catch(err => console.error(" Error DB:", err.message));
 const createTable = async () => {
   try {
     await pool.query(`

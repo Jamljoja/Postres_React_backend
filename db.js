@@ -13,7 +13,7 @@ export const pool = new Pool({
 });
 
 pool.query("SELECT NOW()")
-  .then(() => console.log("✅ Conectado a Supabase OK"))
+  .then(() => console.log(" Conectado a Supabase OK"))
   .catch(err => {
   console.error("DB error:", err);
   console.error("code:", err?.code, "message:", err?.message);
