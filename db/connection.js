@@ -24,6 +24,8 @@ pool.query('SELECT NOW()')
     console.error("❌ ERROR CRÍTICO DE CONEXIÓN:");
     console.error(err.message);
   });
+  export { pool };
+export default pool;
 
 // Crear tabla
 export const createTable = async () => {
