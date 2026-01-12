@@ -1,4 +1,4 @@
-import { pool } from "../db/connection.js";
+import  pool  from "../db/connection.js";
 import cloudinary from "../config/cloudinary.js";
 import fs from "fs-extra";
 
