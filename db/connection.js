@@ -1,22 +1,21 @@
 import pkg from "pg";
-import dotenv from "dotenv";
 
-dotenv.config();
 const { Pool } = pkg;
 
-const isProduction = process.env.NODE_ENV === "production";
-
 export const pool = new Pool({
-
-  connectionString: process.env.DATABASE_URL, 
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false,
   },
 });
 
-pool.query("SELECT 1")
-  .then(() => console.log(" Conectado a Supabase (POOLER)"))
-  .catch(err => console.error(" Error DB:", err.message));
+// Test conexión
+pool
+  .query("SELECT 1")
+  .then(() => console.log("✅ Conectado a Supabase"))
+  .catch((err) => console.error("❌ Error DB:", err.message));
+
+// Crear tabla
 const createTable = async () => {
   try {
     await pool.query(`
@@ -35,4 +34,3 @@ const createTable = async () => {
 };
 
 createTable();
-  
